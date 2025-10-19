@@ -1,18 +1,36 @@
 import 'dart:convert';
-import 'package:cookly/model/meal_model.dart';
 import 'package:http/http.dart' as http;
 
-class MealService {
+class Meal {
+  final String id;
+  final String name;
+  final String thumbnail;
+
+  Meal({required this.id, required this.name, required this.thumbnail});
+
+  factory Meal.fromJson(Map<String, dynamic> json) {
+    return Meal(
+      id: json['idMeal'] ?? '',
+      name: json['strMeal'] ?? '',
+      thumbnail: json['strMealThumb'] ?? '',
+    );
+  }
+}
+
+class MealApi {
+  static const baseUrl = 'https://www.themealdb.com/api/json/v1/1';
+
   static Future<List<Meal>> searchMeals(String query) async {
-    final url = Uri.parse(
-        'https://www.themealdb.com/api/json/v1/1/search.php?s=$query');
+    if (query.isEmpty) return [];
+
+    final url = Uri.parse('$baseUrl/search.php?s=$query');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
+      final data = jsonDecode(response.body);
       final meals = data['meals'];
       if (meals == null) return [];
-      return (meals as List).map((e) => Meal.fromJson(e)).toList();
+      return List<Meal>.from(meals.map((m) => Meal.fromJson(m)));
     } else {
       throw Exception('Failed to load meals');
     }

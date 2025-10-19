@@ -1,6 +1,6 @@
+import 'package:cookly/model/meal_model.dart' hide Meal;
+import 'package:cookly/service/meal_service.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -11,100 +11,108 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _controller = TextEditingController();
-  List<dynamic> _meals = [];
+  List<Meal> _results = [];
   bool _isLoading = false;
 
-  Future<void> _searchMeal(String query) async {
+  void _searchMeals(String query) async {
     if (query.isEmpty) {
-      setState(() => _meals = []);
+      setState(() => _results = []);
       return;
     }
 
     setState(() => _isLoading = true);
-    final url =
-    Uri.parse('https://www.themealdb.com/api/json/v1/1/search.php?s=$query');
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      setState(() {
-        _meals = data['meals'] ?? [];
-        _isLoading = false;
-      });
-    } else {
-      setState(() => _isLoading = false);
-    }
+    final meals = await MealApi.searchMeals(query);
+    setState(() {
+      _results = meals;
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F8F8),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: _buildSearchBox(),
-      ),
-      body: _isLoading
-          ? const Center(
-          child: CircularProgressIndicator(color: Color(0xFFCEA700)))
-          : _meals.isEmpty
-          ? const Center(child: Text('Không có kết quả'))
-          : ListView.builder(
-        itemCount: _meals.length,
-        itemBuilder: (context, index) {
-          final meal = _meals[index];
-          return ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                meal['strMealThumb'] ?? '',
-                width: 45,
-                height: 45,
-                fit: BoxFit.cover,
-              ),
-            ),
-            title: Text(
-              meal['strMeal'] ?? '',
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            trailing: const Icon(Icons.chevron_right,
-                color: Color(0xFFCEA700)),
-            onTap: () {},
-          );
-        },
-      ),
-    );
-  }
+      backgroundColor: const Color(0xFFF5F5F5),
 
-  Widget _buildSearchBox() {
-    return Container(
-      height: 40,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF2F2F2),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.search, color: Colors.grey),
-          const SizedBox(width: 8),
-          Expanded(
-            child: TextField(
-              controller: _controller,
-              decoration: const InputDecoration(
-                hintText: 'Nhập tên món ăn...',
-                border: InputBorder.none,
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const SizedBox(height: 30),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-              onChanged: _searchMeal,
+              child: Row(
+                children: [
+                  const Icon(Icons.search, color: Colors.grey),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      onChanged: _searchMeals,
+                      decoration: const InputDecoration(
+                        hintText: 'Tìm kiếm món ăn...',
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _results.isEmpty
+                  ? const Center(
+                child: Text(
+                  'Không tìm thấy món nào',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              )
+                  : ListView.builder(
+                itemCount: _results.length,
+                itemBuilder: (context, index) {
+                  final meal = _results[index];
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 2,
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 6, horizontal: 2),
+                    child: ListTile(
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          meal.thumbnail,
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      title: Text(meal.name),
+                      onTap: () {
+                        // TODO: Chuyển sang trang chi tiết món ăn
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
+
     );
   }
 }

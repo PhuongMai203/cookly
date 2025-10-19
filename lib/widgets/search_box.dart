@@ -8,7 +8,7 @@ class SearchBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Khi nhấn vào ô tìm kiếm → mở trang SearchPage
+
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const SearchPage()),

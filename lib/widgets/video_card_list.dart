@@ -6,7 +6,7 @@ class VideoCardList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 220,
+      height: 240,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 3,
@@ -32,6 +32,7 @@ class VideoCardList extends StatelessWidget {
                 children: [
                   Stack(
                     children: [
+                      // ẢNH
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.asset(
@@ -41,18 +42,81 @@ class VideoCardList extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      const Positioned(
-                        right: 8,
-                        bottom: 8,
-                        child: Icon(
-                          Icons.play_circle_fill,
-                          color: Colors.white,
-                          size: 32,
+
+                      // NỀN SAO + ĐIỂM Ở GÓC TRÁI TRÊN
+                      Positioned(
+                        top: 8,
+                        left: 8,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFEFD503),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Row(
+                            children: const [
+                              Icon(Icons.star,
+                                  color: Colors.white, size: 14),
+                              SizedBox(width: 2),
+                              Text(
+                                '5',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      // ICON PLAY Ở GIỮA
+                      const Positioned.fill(
+                        child: Center(
+                          child: Icon(
+                            Icons.play_circle_fill,
+                            color: Colors.white,
+                            size: 40,
+                          ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
+                  Positioned(
+                    bottom: 8,
+                    right: 8,
+                    child: Row(
+                      children: const [
+
+                        Text(
+                          '1 tiếng 20 phút',
+                          style: TextStyle(
+                            color: Color(0xFF0048E6),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 3,
+                                color: Colors.black54,
+                                offset: Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 60),
+
+                        Icon(
+                          Icons.favorite_border,
+                          size: 18,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+
                   const Text(
                     'Cách chiên trứng một cách công phu',
                     maxLines: 2,
