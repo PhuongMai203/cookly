@@ -1,6 +1,9 @@
-import 'package:cookly/screens/bookmark_page.dart';
-import 'package:cookly/widgets/search_page.dart';
+import 'package:cookly/screens/search_page.dart';
+import 'package:cookly/widgets/search_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:cookly/widgets/custom_bottom_nav_bar.dart';
+import 'package:cookly/screens/bookmark_page.dart';
+import 'profile_page.dart';
 import '../widgets/search_box.dart';
 import '../widgets/location_header.dart';
 import '../widgets/video_card_list.dart';
@@ -8,8 +11,6 @@ import '../widgets/category_list.dart';
 import '../widgets/recent_list.dart';
 import '../widgets/ingredient_chips.dart';
 import '../widgets/section_header.dart';
-
-import 'profile_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,12 +22,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
-  // Danh sách các trang tương ứng với từng tab
   final List<Widget> _pages = [
-    const _HomeContent(), // nội dung trang Home
+    const _HomeContent(),
     const SearchPage(),
     const BookmarkPage(),
     const ProfilePage(),
+
   ];
 
   void _onTabSelected(int index) {
@@ -38,10 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEDEDED),
+      backgroundColor: const Color(0xFFF1EFEF),
       body: _pages[_currentIndex],
 
-      // Nút trung tâm "+"
       floatingActionButton: Container(
         width: 80,
         height: 80,
@@ -70,45 +70,17 @@ class _HomeScreenState extends State<HomeScreen> {
           child: const Icon(Icons.add, color: Colors.white, size: 36),
         ),
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 20.0,
-        color: Colors.white,
-        elevation: 6,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(Icons.home, 0),
-              _buildNavItem(Icons.search, 1),
-              const SizedBox(width: 40), // chừa chỗ cho nút giữa
-              _buildNavItem(Icons.bookmark, 2),
-              _buildNavItem(Icons.person, 3),
-            ],
-          ),
-        ),
+      bottomNavigationBar: CustomBottomNavBar(
+        currentIndex: _currentIndex,
+        onTabSelected: _onTabSelected,
       ),
-    );
-  }
-
-  Widget _buildNavItem(IconData icon, int index) {
-    return IconButton(
-      icon: Icon(
-        icon,
-        color: _currentIndex == index
-            ? const Color(0xFFCEA700)
-            : Colors.grey,
-        size: 30,
-      ),
-      onPressed: () => _onTabSelected(index),
     );
   }
 }
 
-// Nội dung riêng của tab Home
 class _HomeContent extends StatelessWidget {
   const _HomeContent();
 

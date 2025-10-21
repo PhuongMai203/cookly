@@ -1,5 +1,5 @@
+import 'package:cookly/widgets/search_screen.dart';
 import 'package:flutter/material.dart';
-import 'search_page.dart'; // import trang tìm kiếm
 
 class SearchBox extends StatelessWidget {
   const SearchBox({super.key});
@@ -8,34 +8,25 @@ class SearchBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const SearchPage()),
+          MaterialPageRoute(builder: (_) => const SearchScreen()),
         );
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        height: 40,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: const Color(0xFFF5F5F5),
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 5,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
-        child: const Row(
-          children: [
+        child: Row(
+          children: const [
             Icon(Icons.search, color: Colors.grey),
             SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                'Tìm kiếm món ăn...',
-                style: TextStyle(color: Colors.grey, fontSize: 16),
-              ),
+            Text(
+              'Tìm kiếm món ăn...',
+              style: TextStyle(color: Colors.grey, fontSize: 16),
             ),
           ],
         ),
@@ -43,4 +34,3 @@ class SearchBox extends StatelessWidget {
     );
   }
 }
-
