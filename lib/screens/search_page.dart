@@ -40,6 +40,11 @@ class _SearchPageState extends State<SearchPage> {
       });
     }
   }
+  void _updateMealsFromFilter(List<dynamic> filteredMeals) {
+    setState(() {
+      _meals = filteredMeals;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +60,8 @@ class _SearchPageState extends State<SearchPage> {
                 isFocused: _isFocused,
                 onFocusChange: (focus) => setState(() => _isFocused = focus),
                 onSearch: _searchMeals,
+                onSearchByFilter: _updateMealsFromFilter,
+
               ),
               const SizedBox(height: 20),
               if (_isLoading)

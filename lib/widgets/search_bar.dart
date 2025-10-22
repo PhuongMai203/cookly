@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'filter_bottom_sheet.dart'; // 👈 Thêm import
+import 'filter_bottom_sheet.dart';
 
 class SearchBarWidget extends StatelessWidget {
   final TextEditingController controller;
   final bool isFocused;
   final ValueChanged<bool> onFocusChange;
   final ValueChanged<String> onSearch;
+  final Function(List<dynamic>) onSearchByFilter;
 
   const SearchBarWidget({
     super.key,
@@ -13,6 +14,7 @@ class SearchBarWidget extends StatelessWidget {
     required this.isFocused,
     required this.onFocusChange,
     required this.onSearch,
+    required this.onSearchByFilter,
   });
 
   @override
@@ -51,14 +53,20 @@ class SearchBarWidget extends StatelessWidget {
             padding: EdgeInsets.zero,
             icon: const Icon(Icons.filter_list_alt,
                 color: Color(0xFFCEA700), size: 40),
-            onPressed: () {
-              showModalBottomSheet(
+            onPressed: () async {
+              final result = await showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
                 builder: (_) => const FilterBottomSheet(),
               );
+
+              if (result != null && result is List) {
+                // Gọi callback ra ngoài để SearchPage xử lý
+                onSearchByFilter(result);
+              }
             },
+
           ),
         ),
       ],
