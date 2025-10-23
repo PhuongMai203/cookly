@@ -14,14 +14,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   List<String> ingredients = [];
   List<String> areas = [];
 
-  List<Map<String, dynamic>> meals = []; // 👉 Danh sách món ăn sau khi lọc
+  List<Map<String, dynamic>> meals = [];
 
   String? selectedCategory;
   String? selectedIngredient;
   String? selectedArea;
 
   bool isLoading = true;
-  bool isResultLoading = false; // 👉 Đang tải kết quả lọc
+  bool isResultLoading = false;
 
   @override
   void initState() {
@@ -62,8 +62,6 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       debugPrint('Lỗi tải dữ liệu: $e');
     }
   }
-
-  /// 👉 Hàm lọc món ăn
   Future<void> _fetchMeals() async {
     setState(() {
       isResultLoading = true;
@@ -223,7 +221,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 onPressed: () async {
                   await _fetchMeals();
                   if (context.mounted) {
-                    Navigator.pop(context, meals); // 👉 Trả danh sách món về SearchPage
+                    Navigator.pop(context, meals);
                   }
                 },
 

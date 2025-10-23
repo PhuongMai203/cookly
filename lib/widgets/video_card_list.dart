@@ -43,7 +43,6 @@ class VideoCardList extends StatelessWidget {
                         ),
                       ),
 
-                      // NỀN SAO + ĐIỂM Ở GÓC TRÁI TRÊN
                       Positioned(
                         top: 8,
                         left: 8,
@@ -72,7 +71,6 @@ class VideoCardList extends StatelessWidget {
                         ),
                       ),
 
-                      // ICON PLAY Ở GIỮA
                       const Positioned.fill(
                         child: Center(
                           child: Icon(
@@ -94,16 +92,9 @@ class VideoCardList extends StatelessWidget {
                         Text(
                           '1 tiếng 20 phút',
                           style: TextStyle(
-                            color: Color(0xFF0048E6),
+                            color: Color(0xFF0435A1),
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 3,
-                                color: Colors.black54,
-                                offset: Offset(0, 1),
-                              ),
-                            ],
                           ),
                         ),
                         SizedBox(width: 60),

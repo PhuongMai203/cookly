@@ -24,7 +24,7 @@ class CustomBottomNavBar extends StatelessWidget {
           children: [
             _buildNavItem(Icons.home, 0),
             _buildNavItem(Icons.search, 1),
-            const SizedBox(width: 40),
+            const SizedBox(width: 40, ),
             _buildNavItem(Icons.bookmark, 2),
             _buildNavItem(Icons.person, 3),
           ],
